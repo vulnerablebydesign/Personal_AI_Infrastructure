@@ -238,6 +238,13 @@ async function main() {
       process.exit(0);
     }
 
+    // Skip for skill invocations — skills have their own workflows
+    // Slash commands (e.g., "/HTB", "/PAI") are mode switches, not Algorithm tasks
+    const trimmed = prompt.trim();
+    if (trimmed.startsWith('/')) {
+      process.exit(0);
+    }
+
     // AI-powered classification — no regex, no keywords, no length heuristics
     const { depth, capabilities, skills, thinking } = await classifyPrompt(prompt);
     const reminder = buildReminder(depth, capabilities, skills, thinking);
